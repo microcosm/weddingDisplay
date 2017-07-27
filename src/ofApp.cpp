@@ -29,7 +29,6 @@ void ofApp::setup(){
         texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
         textures.push_back(texture);
     }
-    masker.toggleOverlay();
 }
 
 //--------------------------------------------------------------
@@ -78,6 +77,12 @@ void ofApp::draw(){
 
     masker.draw();
     masker.drawOverlay();
+}
+
+void ofApp::keyPressed(int key){
+    if(key == 'o'){
+        masker.toggleOverlay();
+    }
 }
 
 void ofApp::increment(int& target){
