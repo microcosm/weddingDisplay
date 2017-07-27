@@ -3,7 +3,14 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     masker.setup(2);
-    maskOn = true;
+    isLayered = false;
+    msBeforeSwitch = 30;
+    msForFade = 10;
+
+    maskOpacity.reset(0);
+    maskOpacity.setDuration(msForFade / 60.f);
+    maskOpacity.setRepeatType(PLAY_ONCE);
+    maskOpacity.setCurve(EASE_IN_EASE_OUT);
 
     for(int i = 1; i <= 5; i++){
         texture.setup("wedding" + ofToString(i) + ".jpg");
@@ -14,9 +21,12 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    if(ofGetFrameNum() % 30 == 0){
-        maskOn = !maskOn;
+    if(ofGetFrameNum() % msBeforeSwitch == 0){
+        isLayered = !isLayered;
+        maskOpacity.animateTo(isLayered ? 255 : 0);
     }
+
+    maskOpacity.update(ofGetLastFrameTime());
 }
 
 //--------------------------------------------------------------
@@ -35,7 +45,9 @@ void ofApp::draw(){
 
     masker.beginMask(1);
     {
-        maskOn ? ofBackground(ofColor::white) : ofBackground(ofColor::black);
+        ofBackground(ofColor::black);
+        ofSetColor(ofColor(255, 255, 255, maskOpacity.val()));
+        ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
     }
     masker.endMask(1);
 

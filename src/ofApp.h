@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxTexturePlane.h"
 #include "ofxLayerMask.h"
+#include "ofxAnimatableFloat.h"
 
 class ofApp : public ofBaseApp{
 
@@ -14,5 +15,7 @@ public:
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
     ofxLayerMask masker;
-    bool maskOn;
+    bool isLayered;
+    int msBeforeSwitch, msForFade;
+    ofxAnimatableFloat maskOpacity;
 };
