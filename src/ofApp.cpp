@@ -11,24 +11,18 @@ void ofApp::setup(){
     incrementFrameNum = -1;
     isLayered = false;
     firstIncrement = true;
-
     underTextureID = overTextureID = 0;
+
+    mode = PHOTOS_OF_US;
+    imageLocations[PHOTOS_OF_US] = "photos";
+    imageLocations[INSTAGRAM_PHOTOS] = "photos";
+    imageLocations[KID_PHOTOS] = "photos";
+    loadImages();
 
     maskOpacity.reset(0);
     maskOpacity.setDuration(framesForFade / 60.f);
     maskOpacity.setRepeatType(PLAY_ONCE);
     maskOpacity.setCurve(EASE_IN_EASE_OUT);
-
-    ofDirectory dir("photos");
-    dir.allowExt("png");
-    dir.allowExt("jpg");
-    dir.listDir();
-    numImages = dir.size();
-
-    for(int i = 0; i < numImages; i++){
-        texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
-        textures.push_back(texture);
-    }
 }
 
 //--------------------------------------------------------------
@@ -91,4 +85,17 @@ void ofApp::increment(int& target){
         target = 0 + (target - numImages);
     }
     firstIncrement = false;
+}
+
+void ofApp::loadImages(){
+    ofDirectory dir(imageLocations[mode]);
+    dir.allowExt("png");
+    dir.allowExt("jpg");
+    dir.listDir();
+    numImages = dir.size();
+    
+    for(int i = 0; i < numImages; i++){
+        texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
+        textures.push_back(texture);
+    }
 }
