@@ -16,7 +16,7 @@ public:
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
     ofxLayerMask masker;
-    bool isLayered;
+    bool isLayered, firstIncrement;
     int numImages;
     int framesBeforeSwitch, framesForFade;
     float textureFrameFadeAmount;

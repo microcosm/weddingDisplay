@@ -10,18 +10,23 @@ void ofApp::setup(){
     masker.setup(2);
     incrementFrameNum = -1;
     isLayered = false;
+    firstIncrement = true;
 
-    underTextureID = 0;
-    overTextureID = 1;
-    numImages = 5;
+    underTextureID = overTextureID = 0;
 
     maskOpacity.reset(0);
     maskOpacity.setDuration(framesForFade / 60.f);
     maskOpacity.setRepeatType(PLAY_ONCE);
     maskOpacity.setCurve(EASE_IN_EASE_OUT);
 
-    for(int i = 1; i <= numImages; i++){
-        texture.setup("wedding" + ofToString(i) + ".jpg", 1, TEXTURE_OFFSET_MIDDLE_CENTER);
+    ofDirectory dir("photos");
+    dir.allowExt("png");
+    dir.allowExt("jpg");
+    dir.listDir();
+    numImages = dir.size();
+
+    for(int i = 0; i < numImages; i++){
+        texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
         textures.push_back(texture);
     }
     masker.toggleOverlay();
@@ -30,20 +35,18 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     frameNum = ofGetFrameNum();
-    if(frameNum % framesBeforeSwitch == 0){
+    if(frameNum > 0 && frameNum % framesBeforeSwitch == 0){
         isLayered = !isLayered;
-        maskOpacity.animateTo(isLayered ? 255 : 0);
-        incrementFrameNum = frameNum + framesForFade + 1;
-    }
 
-    if(frameNum == incrementFrameNum){
         if(isLayered){
-            increment(underTextureID);
-            textures.at(underTextureID).setTextureScale(1);
-        }else{
             increment(overTextureID);
             textures.at(overTextureID).setTextureScale(1);
+        }else{
+            increment(underTextureID);
+            textures.at(underTextureID).setTextureScale(1);
         }
+
+        maskOpacity.animateTo(isLayered ? 255 : 0);
     }
 
     maskOpacity.update(ofGetLastFrameTime());
@@ -78,8 +81,9 @@ void ofApp::draw(){
 }
 
 void ofApp::increment(int& target){
-    target += 2;
+    target += firstIncrement ? 1 : 2;
     if(target >= numImages){
         target = 0 + (target - numImages);
     }
+    firstIncrement = false;
 }
