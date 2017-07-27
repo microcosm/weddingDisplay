@@ -19,6 +19,7 @@ public:
     bool isLayered;
     int numImages;
     int framesBeforeSwitch, framesForFade;
+    float textureFrameFadeAmount;
     int incrementFrameNum;
     int underTextureID, overTextureID;
     ofxAnimatableFloat maskOpacity;

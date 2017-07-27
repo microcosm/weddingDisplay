@@ -2,12 +2,15 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    textureFrameFadeAmount = 0.00035;
+    framesBeforeSwitch = 240;
+    framesForFade = 30;
+
     ofSetFrameRate(60);
     masker.setup(2);
     incrementFrameNum = -1;
     isLayered = false;
-    framesBeforeSwitch = 30;
-    framesForFade = 10;
+
     underTextureID = 0;
     overTextureID = 1;
     numImages = 5;
@@ -18,7 +21,7 @@ void ofApp::setup(){
     maskOpacity.setCurve(EASE_IN_EASE_OUT);
 
     for(int i = 1; i <= numImages; i++){
-        texture.setup("wedding" + ofToString(i) + ".jpg");
+        texture.setup("wedding" + ofToString(i) + ".jpg", 1, TEXTURE_OFFSET_MIDDLE_CENTER);
         textures.push_back(texture);
     }
     masker.toggleOverlay();
@@ -34,7 +37,13 @@ void ofApp::update(){
     }
 
     if(frameNum == incrementFrameNum){
-        increment(isLayered ? underTextureID : overTextureID);
+        if(isLayered){
+            increment(underTextureID);
+            textures.at(underTextureID).setTextureScale(1);
+        }else{
+            increment(overTextureID);
+            textures.at(overTextureID).setTextureScale(1);
+        }
     }
 
     maskOpacity.update(ofGetLastFrameTime());
@@ -45,12 +54,14 @@ void ofApp::draw(){
     masker.beginLayer(0);
     {
         textures.at(underTextureID).draw();
+        textures.at(underTextureID).incrementTextureScale(textureFrameFadeAmount);
     }
     masker.endLayer(0);
 
     masker.beginLayer(1);
     {
         textures.at(overTextureID).draw();
+        textures.at(overTextureID).incrementTextureScale(textureFrameFadeAmount);
     }
     masker.endLayer(1);
 
