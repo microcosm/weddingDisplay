@@ -11,11 +11,16 @@ public:
     void setup();
     void update();
     void draw();
+    void increment(int& target);
 
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
     ofxLayerMask masker;
     bool isLayered;
-    int msBeforeSwitch, msForFade;
+    int numImages;
+    int framesBeforeSwitch, framesForFade;
+    int incrementFrameNum;
+    int underTextureID, overTextureID;
     ofxAnimatableFloat maskOpacity;
+    uint64_t frameNum;
 };
