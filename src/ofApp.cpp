@@ -10,6 +10,7 @@ void ofApp::setup(){
 
     ofToggleFullscreen();
     ofSetFrameRate(60);
+    ofHideCursor();
 
     masker.setup(2);
     incrementFrameNum = -1;
@@ -19,12 +20,33 @@ void ofApp::setup(){
     firstIncrement = true;
     underTextureID = overTextureID = 0;
 
-    imageLocations[PHOTOS_OF_US] = "photos/us";
-    imageLocations[SNAPCHAT_PHOTOS] = "photos/snapchat";
-    imageLocations[KID_PHOTOS] = "photos/kids";
-    mode = PHOTOS_OF_US;
-    loadImages();
+    setupImages();
+    setupImageFaders();
+}
 
+void ofApp::setupImages(){
+    photosDirectory = "photos";
+    snapChatImageDirectory = "snapchat";
+    ofDirectory dir(photosDirectory);
+    dir.listDir();
+    vector<ofFile> contents = dir.getFiles();
+
+    for(int i = 0; i < contents.size(); i++){
+        if(contents.at(i).isDirectory() && contents.at(i).getFileName() != snapChatImageDirectory){
+            otherImageDirectories.push_back(contents.at(i).getFileName());
+        }
+    }
+    cout << "Found image directories:" << endl;
+    for(int i = 0; i < otherImageDirectories.size(); i++){
+        cout << otherImageDirectories.at(i) << endl;
+    }
+    cout << "------";
+    currentDirectoryID = 0;
+    mode = OTHER_PHOTOS;
+    loadImages();
+}
+
+void ofApp::setupImageFaders(){
     maskOpacity.reset(0);
     maskOpacity.setDuration(framesForFade / 60.f);
     maskOpacity.setRepeatType(PLAY_ONCE);
@@ -64,7 +86,7 @@ void ofApp::update(){
             textures.at(underTextureID).setTextureScale(1);
         }
 
-        if((mode == PHOTOS_OF_US || mode == KID_PHOTOS) && justReset){
+        if(justReset){
             isTransitioning = true;
             framesSinceTransition = 0;
         }
@@ -134,18 +156,25 @@ void ofApp::incrementTextureID(int& target){
     firstIncrement = false;
 }
 
+void ofApp::incrementDirectoryID(){
+    currentDirectoryID++;
+    if(currentDirectoryID >= otherImageDirectories.size()){
+        currentDirectoryID = 0;
+    }
+}
+
 void ofApp::incrementDisplayMode(){
-    if(mode == PHOTOS_OF_US){
-        mode = KID_PHOTOS;
-    }else if(mode == KID_PHOTOS){
+    if(mode == SNAPCHAT_PHOTOS){
+        mode = OTHER_PHOTOS;
+        incrementDirectoryID();
+    }else if(mode == OTHER_PHOTOS){
         mode = SNAPCHAT_PHOTOS;
-    }else if(mode == SNAPCHAT_PHOTOS){
-        mode = PHOTOS_OF_US;
     }
 }
 
 void ofApp::loadImages(){
-    ofDirectory dir(imageLocations[mode]);
+    string currentImagesDirectory = mode == SNAPCHAT_PHOTOS ? snapChatImageDirectory : otherImageDirectories.at(currentDirectoryID);
+    ofDirectory dir(photosDirectory + "/" + currentImagesDirectory);
     dir.allowExt("png");
     dir.allowExt("jpg");
     dir.listDir();

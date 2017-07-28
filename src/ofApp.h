@@ -6,20 +6,22 @@
 #include "ofxAnimatableFloat.h"
 
 enum displayMode {
-    PHOTOS_OF_US,
-    KID_PHOTOS,
-    SNAPCHAT_PHOTOS
+    SNAPCHAT_PHOTOS,
+    OTHER_PHOTOS
 };
 
 class ofApp : public ofBaseApp{
 
 public:
     void setup();
+    void setupImages();
+    void setupImageFaders();
     void update();
     void draw();
     void keyPressed(int key);
     void incrementTextureID(int& target);
     void incrementDisplayMode();
+    void incrementDirectoryID();
     void loadImages();
 
     vector<ofxTexturePlane> textures;
@@ -34,5 +36,7 @@ public:
     ofxAnimatableFloat maskOpacity, imageOpacity;
     uint64_t frameNum;
     displayMode mode;
-    map<displayMode, string> imageLocations;
+    int currentDirectoryID;
+    string photosDirectory, snapChatImageDirectory;
+    vector<string> otherImageDirectories;
 };
