@@ -27,6 +27,7 @@ public:
     void loadImages();
     void loadSnapchatImages(ofDirectory &dir);
     void loadOtherImages(ofDirectory &dir);
+    void loadImage(string path);
 
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
@@ -44,4 +45,5 @@ public:
     string rootDirectory, photosDirectory, snapChatImageDirectory;
     vector<string> otherImageDirectories, snapchatImagesPaths;
     ofxCenteredTrueTypeFont font;
+    ofImage image;
 };

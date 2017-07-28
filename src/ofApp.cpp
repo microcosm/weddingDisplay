@@ -226,16 +226,25 @@ void ofApp::loadSnapchatImages(ofDirectory &dir){
         cout << snapchatImagesPaths.at(i) << endl;
     }
     cout << "-----" << endl;*/
-    for(int i = 0; i < numSnapchatImages; i++){
-        textures.push_back(texture);
-        textures.back().setup(snapchatImagesPaths.at(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
+    for(int i = 0; i < numImages; i++){
+        loadImage(snapchatImagesPaths.at(i));
     }
 }
 
 void ofApp::loadOtherImages(ofDirectory &dir){
     numImages = dir.size();
     for(int i = 0; i < numImages; i++){
-        textures.push_back(texture);
-        textures.back().setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
+        loadImage(dir.getPath(i));
+    }
+}
+
+void ofApp::loadImage(string path){
+    textures.push_back(texture);
+
+    image.load(path);
+    if(image.getWidth() > image.getHeight()){
+        textures.back().setup(path, ofGetWidth(), ofGetHeight(), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
+    }else{
+        textures.back().setup(path, ofGetWidth(), ofGetHeight(), 1, TEXTURE_OFFSET_MIDDLE_CENTER, TEXTURE_MODE_FIT, TEXTURE_WRAP_CLAMP_TO_BORDER);
     }
 }
