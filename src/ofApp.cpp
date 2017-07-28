@@ -8,7 +8,9 @@ void ofApp::setup(){
     framesAfterTransitionBeforeLoad = 60;
     framesAfterTransitionBeforeStart = 180;
 
+    ofToggleFullscreen();
     ofSetFrameRate(60);
+
     masker.setup(2);
     incrementFrameNum = -1;
     isLayered = false;
