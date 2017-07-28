@@ -151,7 +151,7 @@ void ofApp::loadImages(){
 
     textures.clear();
     for(int i = 0; i < numImages; i++){
-        texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
         textures.push_back(texture);
+        textures.back().setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
     }
 }
