@@ -288,6 +288,47 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>B49B9D6C30702AD839414623</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>08B4D373327B759468249F7E</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>src</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>79362BEDEB3134B7BDA3E4C1</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>B49B9D6C30702AD839414623</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>ofxCenteredTrueTypeFont</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>08B4D373327B759468249F7E</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxCenteredTrueTypeFont.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxCenteredTrueTypeFont/src/ofxCenteredTrueTypeFont.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>F85914DABCB335C508BB4238</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -524,6 +565,7 @@
 				<key>children</key>
 				<array>
 					<string>8D83D7AC476703EBECC1932D</string>
+					<string>79362BEDEB3134B7BDA3E4C1</string>
 					<string>DB48ECEB4A5AD24AB25E3141</string>
 					<string>4851BA614800E5E7FAEC1866</string>
 				</array>
@@ -680,6 +722,7 @@
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>../../../addons/ofxAnimatable/src</string>
+						<string>../../../addons/ofxCenteredTrueTypeFont/src</string>
 						<string>../../../addons/ofxLayerMask/src</string>
 						<string>../../../addons/ofxLayerMask/src/shader</string>
 						<string>../../../addons/ofxTexturePlane/src</string>
@@ -741,6 +784,7 @@
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>../../../addons/ofxAnimatable/src</string>
+						<string>../../../addons/ofxCenteredTrueTypeFont/src</string>
 						<string>../../../addons/ofxLayerMask/src</string>
 						<string>../../../addons/ofxLayerMask/src/shader</string>
 						<string>../../../addons/ofxTexturePlane/src</string>
@@ -897,6 +941,7 @@
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>../../../addons/ofxAnimatable/src</string>
+						<string>../../../addons/ofxCenteredTrueTypeFont/src</string>
 						<string>../../../addons/ofxLayerMask/src</string>
 						<string>../../../addons/ofxLayerMask/src/shader</string>
 						<string>../../../addons/ofxTexturePlane/src</string>
@@ -948,6 +993,7 @@
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>../../../addons/ofxAnimatable/src</string>
+						<string>../../../addons/ofxCenteredTrueTypeFont/src</string>
 						<string>../../../addons/ofxLayerMask/src</string>
 						<string>../../../addons/ofxLayerMask/src/shader</string>
 						<string>../../../addons/ofxTexturePlane/src</string>

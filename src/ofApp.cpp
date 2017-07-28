@@ -155,9 +155,9 @@ void ofApp::draw(){
 void ofApp::drawDirectoryName(){
     ofSetColor(ofColor(ofColor::white, directoryNameOpacity.val()));
     if(mode == SNAPCHAT_PHOTOS){
-        font.drawString("Wedding Photo Booth!", ofGetWidth() * 0.5, ofGetHeight() * 0.5);
+        font.drawStringCentered("Wedding Photo Booth!", ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }else{
-        font.drawString(otherImageDirectories.at(currentDirectoryID), ofGetWidth() * 0.5, ofGetHeight() * 0.5);
+        font.drawStringCentered(otherImageDirectories.at(currentDirectoryID), ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }
 }
 

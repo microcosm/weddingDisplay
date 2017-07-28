@@ -1,3 +1,4 @@
 ofxAnimatable
+ofxCenteredTrueTypeFont
 ofxLayerMask
 ofxTexturePlane

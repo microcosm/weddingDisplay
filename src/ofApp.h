@@ -4,6 +4,7 @@
 #include "ofxTexturePlane.h"
 #include "ofxLayerMask.h"
 #include "ofxAnimatableFloat.h"
+#include "ofxCenteredTrueTypeFont.h"
 
 enum displayMode {
     SNAPCHAT_PHOTOS,
@@ -42,5 +43,5 @@ public:
     int currentDirectoryID;
     string rootDirectory, photosDirectory, snapChatImageDirectory;
     vector<string> otherImageDirectories, snapchatImagesPaths;
-    ofTrueTypeFont font;
+    ofxCenteredTrueTypeFont font;
 };
