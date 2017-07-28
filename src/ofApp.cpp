@@ -8,10 +8,11 @@ void ofApp::setup(){
     framesAfterModeTransitionBeforeLoad = 60;
     framesAfterModeTransitionBeforeStart = 300;
     numSnapchatImages = 3;
+    showOverlay = false;
     rootDirectory = "/Users/amcw/Drive/Wedding Slideshow";
 
     ofToggleFullscreen();
-    ofSetFrameRate(60);
+    ofSetFrameRate(30);
     ofHideCursor();
 
     masker.setup(2);
@@ -149,7 +150,12 @@ void ofApp::draw(){
     masker.endMask(1);
 
     masker.draw();
-    masker.drawOverlay();
+
+    if(showOverlay){
+        ofSetColor(ofColor::white);
+        ofDrawBitmapString(ofGetFrameRate(), 20, 20);
+        masker.drawOverlay();
+    }
 }
 
 void ofApp::drawDirectoryName(){
@@ -164,6 +170,7 @@ void ofApp::drawDirectoryName(){
 void ofApp::keyPressed(int key){
     if(key == 'o'){
         masker.toggleOverlay();
+        showOverlay = !showOverlay;
     }
 }
 

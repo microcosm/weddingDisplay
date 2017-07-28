@@ -46,4 +46,5 @@ public:
     vector<string> otherImageDirectories, snapchatImagesPaths;
     ofxCenteredTrueTypeFont font;
     ofImage image;
+    bool showOverlay;
 };
