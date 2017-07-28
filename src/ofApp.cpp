@@ -3,13 +3,15 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     textureFrameFadeAmount = 0.00035;
-    framesBeforeSwitch = 240;
+    framesBeforeSwitch = 60;
     framesForFade = 30;
 
     ofSetFrameRate(60);
     masker.setup(2);
     incrementFrameNum = -1;
     isLayered = false;
+    isTransitioning = false;
+    justReset = false;
     firstIncrement = true;
     underTextureID = overTextureID = 0;
 
@@ -28,15 +30,23 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     frameNum = ofGetFrameNum();
-    if(frameNum > 0 && frameNum % framesBeforeSwitch == 0){
+    if(isTransitioning){
+
+    }else if(frameNum > 0 && frameNum % framesBeforeSwitch == 0){
         isLayered = !isLayered;
 
         if(isLayered){
-            increment(overTextureID);
+            incrementTextureID(overTextureID);
             textures.at(overTextureID).setTextureScale(1);
         }else{
-            increment(underTextureID);
+            incrementTextureID(underTextureID);
             textures.at(underTextureID).setTextureScale(1);
+        }
+
+        if((mode == PHOTOS_OF_US || mode == KID_PHOTOS) && justReset){
+            incrementDisplayMode();
+            //loadImages();
+            isTransitioning = true;
         }
 
         maskOpacity.animateTo(isLayered ? 255 : 0);
@@ -49,15 +59,25 @@ void ofApp::update(){
 void ofApp::draw(){
     masker.beginLayer(0);
     {
-        textures.at(underTextureID).draw();
-        textures.at(underTextureID).incrementTextureScale(textureFrameFadeAmount);
+        if(isTransitioning && !isLayered){
+            ofClear(ofColor::black);
+            ofDrawBitmapString("TRANSITIONING...", 20, 20);
+        }else{
+            textures.at(underTextureID).incrementTextureScale(textureFrameFadeAmount);
+            textures.at(underTextureID).draw();
+        }
     }
     masker.endLayer(0);
 
     masker.beginLayer(1);
     {
-        textures.at(overTextureID).draw();
-        textures.at(overTextureID).incrementTextureScale(textureFrameFadeAmount);
+        if(isTransitioning && isLayered) {
+            ofClear(ofColor::black);
+            ofDrawBitmapString("TRANSITIONING...", 20, 20);
+        }else{
+            textures.at(overTextureID).incrementTextureScale(textureFrameFadeAmount);
+            textures.at(overTextureID).draw();
+        }
     }
     masker.endLayer(1);
 
@@ -79,12 +99,25 @@ void ofApp::keyPressed(int key){
     }
 }
 
-void ofApp::increment(int& target){
+void ofApp::incrementTextureID(int& target){
     target += firstIncrement ? 1 : 2;
+    justReset = false;
+
     if(target >= numImages){
         target = 0 + (target - numImages);
+        justReset = true;
     }
     firstIncrement = false;
+}
+
+void ofApp::incrementDisplayMode(){
+    if(mode == PHOTOS_OF_US){
+        mode = KID_PHOTOS;
+    }else if(mode == KID_PHOTOS){
+        mode = INSTAGRAM_PHOTOS;
+    }else if(mode == INSTAGRAM_PHOTOS){
+        mode = PHOTOS_OF_US;
+    }
 }
 
 void ofApp::loadImages(){
@@ -93,7 +126,7 @@ void ofApp::loadImages(){
     dir.allowExt("jpg");
     dir.listDir();
     numImages = dir.size();
-    
+
     for(int i = 0; i < numImages; i++){
         texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
         textures.push_back(texture);

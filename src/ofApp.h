@@ -7,8 +7,8 @@
 
 enum displayMode {
     PHOTOS_OF_US,
-    INSTAGRAM_PHOTOS,
-    KID_PHOTOS
+    KID_PHOTOS,
+    INSTAGRAM_PHOTOS
 };
 
 class ofApp : public ofBaseApp{
@@ -18,13 +18,14 @@ public:
     void update();
     void draw();
     void keyPressed(int key);
-    void increment(int& target);
+    void incrementTextureID(int& target);
+    void incrementDisplayMode();
     void loadImages();
 
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
     ofxLayerMask masker;
-    bool isLayered, firstIncrement;
+    bool isLayered, firstIncrement, justReset, isTransitioning;
     int numImages;
     int framesBeforeSwitch, framesForFade;
     float textureFrameFadeAmount;
