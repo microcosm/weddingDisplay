@@ -27,7 +27,7 @@ public:
     ofxLayerMask masker;
     bool isLayered, firstIncrement, justReset, isTransitioning;
     int numImages;
-    int framesBeforeSwitch, framesForFade;
+    int framesBeforeSwitch, framesForFade, framesAfterTransitionBeforeLoad, framesSinceTransition, framesAfterTransitionBeforeStart;
     float textureFrameFadeAmount;
     int incrementFrameNum;
     int underTextureID, overTextureID;

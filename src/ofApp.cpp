@@ -5,6 +5,8 @@ void ofApp::setup(){
     textureFrameFadeAmount = 0.00035;
     framesBeforeSwitch = 60;
     framesForFade = 30;
+    framesAfterTransitionBeforeLoad = 60;
+    framesAfterTransitionBeforeStart = 180;
 
     ofSetFrameRate(60);
     masker.setup(2);
@@ -15,10 +17,10 @@ void ofApp::setup(){
     firstIncrement = true;
     underTextureID = overTextureID = 0;
 
-    mode = PHOTOS_OF_US;
     imageLocations[PHOTOS_OF_US] = "photos";
     imageLocations[INSTAGRAM_PHOTOS] = "photos";
     imageLocations[KID_PHOTOS] = "photos";
+    mode = PHOTOS_OF_US;
     loadImages();
 
     maskOpacity.reset(0);
@@ -31,7 +33,16 @@ void ofApp::setup(){
 void ofApp::update(){
     frameNum = ofGetFrameNum();
     if(isTransitioning){
-
+        framesSinceTransition++;
+        if(framesSinceTransition == framesAfterTransitionBeforeLoad){
+            incrementDisplayMode();
+            loadImages();
+        }
+        if(framesSinceTransition == framesAfterTransitionBeforeStart){
+            isTransitioning = false;
+            firstIncrement = true;
+            underTextureID = overTextureID = 0;
+        }
     }else if(frameNum > 0 && frameNum % framesBeforeSwitch == 0){
         isLayered = !isLayered;
 
@@ -44,9 +55,8 @@ void ofApp::update(){
         }
 
         if((mode == PHOTOS_OF_US || mode == KID_PHOTOS) && justReset){
-            incrementDisplayMode();
-            //loadImages();
             isTransitioning = true;
+            framesSinceTransition = 0;
         }
 
         maskOpacity.animateTo(isLayered ? 255 : 0);
@@ -127,6 +137,7 @@ void ofApp::loadImages(){
     dir.listDir();
     numImages = dir.size();
 
+    textures.clear();
     for(int i = 0; i < numImages; i++){
         texture.setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
         textures.push_back(texture);
