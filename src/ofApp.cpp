@@ -20,7 +20,7 @@ void ofApp::setup(){
     justReset = false;
     firstIncrement = true;
     underTextureID = overTextureID = 0;
-    font.load(rootDirectory + "/fonts/coneria_script/Demo_ConeriaScript.ttf", 32, true);
+    font.load(rootDirectory + "/fonts/coneria_script/Demo_ConeriaScript.ttf", 100, true);
 
     setupImages();
     setupImageFaders();
