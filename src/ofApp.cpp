@@ -3,8 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     textureFrameFadeAmount = 0.00035;
-    framesBeforeSwitch = 60;
-    framesForFade = 30;
+    framesBeforeSwitch = 120;
+    framesForFade = 60;
     framesAfterTransitionBeforeLoad = 60;
     framesAfterTransitionBeforeStart = 180;
 
@@ -27,11 +27,17 @@ void ofApp::setup(){
     maskOpacity.setDuration(framesForFade / 60.f);
     maskOpacity.setRepeatType(PLAY_ONCE);
     maskOpacity.setCurve(EASE_IN_EASE_OUT);
+    imageOpacity.reset(0);
+    imageOpacity.setDuration(framesForFade / 5 / 60.f);
+    imageOpacity.setRepeatType(PLAY_ONCE);
+    imageOpacity.setCurve(EASE_IN_EASE_OUT);
+    imageOpacity.animateTo(255);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     frameNum = ofGetFrameNum();
+
     if(isTransitioning){
         framesSinceTransition++;
         if(framesSinceTransition == framesAfterTransitionBeforeLoad){
@@ -39,9 +45,11 @@ void ofApp::update(){
             loadImages();
         }
         if(framesSinceTransition == framesAfterTransitionBeforeStart){
-            isTransitioning = false;
             firstIncrement = true;
             underTextureID = overTextureID = 0;
+            isTransitioning = false;
+            imageOpacity.reset(0);
+            imageOpacity.animateTo(255);
         }
     }else if(frameNum > 0 && frameNum % framesBeforeSwitch == 0){
         isLayered = !isLayered;
@@ -62,17 +70,20 @@ void ofApp::update(){
         maskOpacity.animateTo(isLayered ? 255 : 0);
     }
 
-    maskOpacity.update(ofGetLastFrameTime());
+    maskOpacity.update(1.0f/60.0f);
+    imageOpacity.update(1.0f/60.0f);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofBackground(ofColor::black);
     masker.beginLayer(0);
     {
+        ofClear(ofColor::black);
         if(isTransitioning && !isLayered){
-            ofClear(ofColor::black);
             ofDrawBitmapString("TRANSITIONING...", 20, 20);
         }else{
+            ofSetColor(ofColor(ofColor::white, imageOpacity.val()));
             textures.at(underTextureID).incrementTextureScale(textureFrameFadeAmount);
             textures.at(underTextureID).draw();
         }
@@ -81,10 +92,11 @@ void ofApp::draw(){
 
     masker.beginLayer(1);
     {
+        ofClear(ofColor::black);
         if(isTransitioning && isLayered) {
-            ofClear(ofColor::black);
             ofDrawBitmapString("TRANSITIONING...", 20, 20);
         }else{
+            ofSetColor(ofColor(ofColor::white, imageOpacity.val()));
             textures.at(overTextureID).incrementTextureScale(textureFrameFadeAmount);
             textures.at(overTextureID).draw();
         }

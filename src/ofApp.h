@@ -31,7 +31,7 @@ public:
     float textureFrameFadeAmount;
     int incrementFrameNum;
     int underTextureID, overTextureID;
-    ofxAnimatableFloat maskOpacity;
+    ofxAnimatableFloat maskOpacity, imageOpacity;
     uint64_t frameNum;
     displayMode mode;
     map<displayMode, string> imageLocations;
