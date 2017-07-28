@@ -2,11 +2,11 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    textureFrameFadeAmount = 0.00035;
-    framesBeforeSwitch = 120;
-    framesForFade = 60;
-    framesAfterTransitionBeforeLoad = 60;
-    framesAfterTransitionBeforeStart = 180;
+    frameScaleAmount = 0.00035;
+    framesBeforeSwitchToNextPhoto = 120;
+    framesForFades = 60;
+    framesAfterModeTransitionBeforeLoad = 60;
+    framesAfterModeTransitionBeforeStart = 300;
     numSnapchatImages = 3;
 
     ofToggleFullscreen();
@@ -14,7 +14,6 @@ void ofApp::setup(){
     ofHideCursor();
 
     masker.setup(2);
-    incrementFrameNum = -1;
     isLayered = false;
     isTransitioning = false;
     justReset = false;
@@ -49,13 +48,18 @@ void ofApp::setupImages(){
 
 void ofApp::setupImageFaders(){
     maskOpacity.reset(0);
-    maskOpacity.setDuration(framesForFade / 60.f);
+    maskOpacity.setDuration(framesForFades / 60.f);
     maskOpacity.setRepeatType(PLAY_ONCE);
     maskOpacity.setCurve(EASE_IN_EASE_OUT);
     imageOpacity.reset(0);
-    imageOpacity.setDuration(framesForFade / 5 / 60.f);
+    imageOpacity.setDuration(framesForFades / 5 / 60.f);
     imageOpacity.setRepeatType(PLAY_ONCE);
     imageOpacity.setCurve(EASE_IN_EASE_OUT);
+    directoryNameOpacity.reset(0);
+    directoryNameOpacity.setDuration(framesForFades / 3 / 60.f);
+    directoryNameOpacity.setRepeatType(PLAY_ONCE);
+    directoryNameOpacity.setCurve(EASE_IN_EASE_OUT);
+
     imageOpacity.animateTo(255);
 }
 
@@ -65,18 +69,22 @@ void ofApp::update(){
 
     if(isTransitioning){
         framesSinceTransition++;
-        if(framesSinceTransition == framesAfterTransitionBeforeLoad){
+        if(framesSinceTransition == framesAfterModeTransitionBeforeLoad){
             incrementDisplayMode();
             loadImages();
+            directoryNameOpacity.animateTo(255);
             underTextureID = overTextureID = 0;
         }
-        if(framesSinceTransition == framesAfterTransitionBeforeStart){
+        if(framesSinceTransition == framesAfterModeTransitionBeforeStart - 20 - (directoryNameOpacity.getDuration() * 60)){
+            directoryNameOpacity.animateTo(0);
+        }
+        if(framesSinceTransition == framesAfterModeTransitionBeforeStart){
             firstIncrement = true;
             isTransitioning = false;
             imageOpacity.reset(0);
             imageOpacity.animateTo(255);
         }
-    }else if(frameNum > 0 && frameNum % framesBeforeSwitch == 0){
+    }else if(frameNum > 0 && frameNum % framesBeforeSwitchToNextPhoto == 0){
         isLayered = !isLayered;
 
         if(isLayered){
@@ -90,6 +98,7 @@ void ofApp::update(){
         if(justReset){
             isTransitioning = true;
             framesSinceTransition = 0;
+            directoryNameOpacity.reset(0);
         }
 
         maskOpacity.animateTo(isLayered ? 255 : 0);
@@ -97,6 +106,7 @@ void ofApp::update(){
 
     maskOpacity.update(1.0f/60.0f);
     imageOpacity.update(1.0f/60.0f);
+    directoryNameOpacity.update(1.0f/60.f);
 }
 
 //--------------------------------------------------------------
@@ -106,10 +116,10 @@ void ofApp::draw(){
     {
         ofClear(ofColor::black);
         if(isTransitioning && !isLayered){
-            ofDrawBitmapString("TRANSITIONING...", 20, 20);
+            drawDirectoryName();
         }else{
             ofSetColor(ofColor(ofColor::white, imageOpacity.val()));
-            textures.at(underTextureID).incrementTextureScale(textureFrameFadeAmount);
+            textures.at(underTextureID).incrementTextureScale(frameScaleAmount);
             textures.at(underTextureID).draw();
         }
     }
@@ -119,10 +129,10 @@ void ofApp::draw(){
     {
         ofClear(ofColor::black);
         if(isTransitioning && isLayered) {
-            ofDrawBitmapString("TRANSITIONING...", 20, 20);
+            drawDirectoryName();
         }else{
             ofSetColor(ofColor(ofColor::white, imageOpacity.val()));
-            textures.at(overTextureID).incrementTextureScale(textureFrameFadeAmount);
+            textures.at(overTextureID).incrementTextureScale(frameScaleAmount);
             textures.at(overTextureID).draw();
         }
     }
@@ -138,6 +148,15 @@ void ofApp::draw(){
 
     masker.draw();
     masker.drawOverlay();
+}
+
+void ofApp::drawDirectoryName(){
+    ofSetColor(ofColor(ofColor::white, directoryNameOpacity.val()));
+    if(mode == SNAPCHAT_PHOTOS){
+        ofDrawBitmapString("Wedding Snapchat Photos", 20, 20);
+    }else{
+        ofDrawBitmapString(otherImageDirectories.at(currentDirectoryID), 20, 20);
+    }
 }
 
 void ofApp::keyPressed(int key){

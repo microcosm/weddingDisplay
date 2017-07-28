@@ -18,6 +18,7 @@ public:
     void setupImageFaders();
     void update();
     void draw();
+    void drawDirectoryName();
     void keyPressed(int key);
     void incrementTextureID(int& target);
     void incrementDisplayMode();
@@ -31,11 +32,11 @@ public:
     ofxLayerMask masker;
     bool isLayered, firstIncrement, justReset, isTransitioning;
     int numImages, numSnapchatImages;
-    int framesBeforeSwitch, framesForFade, framesAfterTransitionBeforeLoad, framesSinceTransition, framesAfterTransitionBeforeStart;
-    float textureFrameFadeAmount;
-    int incrementFrameNum;
+    int framesBeforeSwitchToNextPhoto, framesForFades, framesAfterModeTransitionBeforeLoad, framesAfterModeTransitionBeforeStart;
+    int framesSinceTransition;
+    float frameScaleAmount;
     int underTextureID, overTextureID;
-    ofxAnimatableFloat maskOpacity, imageOpacity;
+    ofxAnimatableFloat maskOpacity, imageOpacity, directoryNameOpacity;
     uint64_t frameNum;
     displayMode mode;
     int currentDirectoryID;
