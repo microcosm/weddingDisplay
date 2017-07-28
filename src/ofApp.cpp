@@ -45,10 +45,10 @@ void ofApp::update(){
         if(framesSinceTransition == framesAfterTransitionBeforeLoad){
             incrementDisplayMode();
             loadImages();
+            underTextureID = overTextureID = 0;
         }
         if(framesSinceTransition == framesAfterTransitionBeforeStart){
             firstIncrement = true;
-            underTextureID = overTextureID = 0;
             isTransitioning = false;
             imageOpacity.reset(0);
             imageOpacity.animateTo(255);
