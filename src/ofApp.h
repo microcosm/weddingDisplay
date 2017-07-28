@@ -23,12 +23,14 @@ public:
     void incrementDisplayMode();
     void incrementDirectoryID();
     void loadImages();
+    void loadSnapchatImages(ofDirectory &dir);
+    void loadOtherImages(ofDirectory &dir);
 
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
     ofxLayerMask masker;
     bool isLayered, firstIncrement, justReset, isTransitioning;
-    int numImages;
+    int numImages, numSnapchatImages;
     int framesBeforeSwitch, framesForFade, framesAfterTransitionBeforeLoad, framesSinceTransition, framesAfterTransitionBeforeStart;
     float textureFrameFadeAmount;
     int incrementFrameNum;
@@ -38,5 +40,5 @@ public:
     displayMode mode;
     int currentDirectoryID;
     string photosDirectory, snapChatImageDirectory;
-    vector<string> otherImageDirectories;
+    vector<string> otherImageDirectories, snapchatImagesPaths;
 };

@@ -7,6 +7,7 @@ void ofApp::setup(){
     framesForFade = 60;
     framesAfterTransitionBeforeLoad = 60;
     framesAfterTransitionBeforeStart = 180;
+    numSnapchatImages = 3;
 
     ofToggleFullscreen();
     ofSetFrameRate(60);
@@ -178,9 +179,40 @@ void ofApp::loadImages(){
     dir.allowExt("png");
     dir.allowExt("jpg");
     dir.listDir();
-    numImages = dir.size();
-
     textures.clear();
+
+    if(mode == SNAPCHAT_PHOTOS){
+        loadSnapchatImages(dir);
+    }else{
+        loadOtherImages(dir);
+    }
+}
+
+void ofApp::loadSnapchatImages(ofDirectory &dir){
+    snapchatImagesPaths.clear();
+    numImages = numSnapchatImages;
+
+    //cout << "Loaded from snapchat folder:" << endl;
+    for(int i = 0; i < dir.size(); i++){
+        snapchatImagesPaths.push_back(dir.getPath(i));
+        //cout << dir.getPath(i) << endl;
+    }
+    //cout << "-----" << endl;
+    random_shuffle(snapchatImagesPaths.begin(), snapchatImagesPaths.end());
+    snapchatImagesPaths.resize(numSnapchatImages);
+    /*cout << "Shuffled and trimmed:" << endl;
+    for(int i = 0; i < snapchatImagesPaths.size(); i++){
+        cout << snapchatImagesPaths.at(i) << endl;
+    }
+    cout << "-----" << endl;*/
+    for(int i = 0; i < numSnapchatImages; i++){
+        textures.push_back(texture);
+        textures.back().setup(snapchatImagesPaths.at(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
+    }
+}
+
+void ofApp::loadOtherImages(ofDirectory &dir){
+    numImages = dir.size();
     for(int i = 0; i < numImages; i++){
         textures.push_back(texture);
         textures.back().setup(dir.getPath(i), 1, TEXTURE_OFFSET_MIDDLE_CENTER);
