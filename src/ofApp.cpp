@@ -25,7 +25,7 @@ void ofApp::setup(){
 }
 
 void ofApp::setupImages(){
-    photosDirectory = "photos";
+    photosDirectory = "/Users/amcw/Drive/Wedding Slideshow Photos";
     snapChatImageDirectory = "snapchat";
     ofDirectory dir(photosDirectory);
     dir.listDir();
@@ -153,7 +153,7 @@ void ofApp::draw(){
 void ofApp::drawDirectoryName(){
     ofSetColor(ofColor(ofColor::white, directoryNameOpacity.val()));
     if(mode == SNAPCHAT_PHOTOS){
-        ofDrawBitmapString("Wedding Snapchat Photos", 20, 20);
+        ofDrawBitmapString("Wedding Photo Booth!", 20, 20);
     }else{
         ofDrawBitmapString(otherImageDirectories.at(currentDirectoryID), 20, 20);
     }
