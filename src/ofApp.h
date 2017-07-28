@@ -40,6 +40,7 @@ public:
     uint64_t frameNum;
     displayMode mode;
     int currentDirectoryID;
-    string photosDirectory, snapChatImageDirectory;
+    string rootDirectory, photosDirectory, snapChatImageDirectory;
     vector<string> otherImageDirectories, snapchatImagesPaths;
+    ofTrueTypeFont font;
 };

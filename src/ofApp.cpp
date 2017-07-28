@@ -8,6 +8,7 @@ void ofApp::setup(){
     framesAfterModeTransitionBeforeLoad = 60;
     framesAfterModeTransitionBeforeStart = 300;
     numSnapchatImages = 3;
+    rootDirectory = "/Users/amcw/Drive/Wedding Slideshow";
 
     ofToggleFullscreen();
     ofSetFrameRate(60);
@@ -19,15 +20,16 @@ void ofApp::setup(){
     justReset = false;
     firstIncrement = true;
     underTextureID = overTextureID = 0;
+    font.load(rootDirectory + "/fonts/coneria_script/Demo_ConeriaScript.ttf", 32, true);
 
     setupImages();
     setupImageFaders();
 }
 
 void ofApp::setupImages(){
-    photosDirectory = "/Users/amcw/Drive/Wedding Slideshow Photos";
+    photosDirectory = "photos";
     snapChatImageDirectory = "snapchat";
-    ofDirectory dir(photosDirectory);
+    ofDirectory dir(rootDirectory + "/" + photosDirectory);
     dir.listDir();
     vector<ofFile> contents = dir.getFiles();
 
@@ -153,9 +155,9 @@ void ofApp::draw(){
 void ofApp::drawDirectoryName(){
     ofSetColor(ofColor(ofColor::white, directoryNameOpacity.val()));
     if(mode == SNAPCHAT_PHOTOS){
-        ofDrawBitmapString("Wedding Photo Booth!", 20, 20);
+        font.drawString("Wedding Photo Booth!", ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }else{
-        ofDrawBitmapString(otherImageDirectories.at(currentDirectoryID), 20, 20);
+        font.drawString(otherImageDirectories.at(currentDirectoryID), ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }
 }
 
@@ -194,7 +196,7 @@ void ofApp::incrementDisplayMode(){
 
 void ofApp::loadImages(){
     string currentImagesDirectory = mode == SNAPCHAT_PHOTOS ? snapChatImageDirectory : otherImageDirectories.at(currentDirectoryID);
-    ofDirectory dir(photosDirectory + "/" + currentImagesDirectory);
+    ofDirectory dir(rootDirectory + "/" + photosDirectory + "/" + currentImagesDirectory);
     dir.allowExt("png");
     dir.allowExt("jpg");
     dir.listDir();
