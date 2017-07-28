@@ -8,7 +8,7 @@
 enum displayMode {
     PHOTOS_OF_US,
     KID_PHOTOS,
-    INSTAGRAM_PHOTOS
+    SNAPCHAT_PHOTOS
 };
 
 class ofApp : public ofBaseApp{

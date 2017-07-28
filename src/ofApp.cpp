@@ -17,9 +17,9 @@ void ofApp::setup(){
     firstIncrement = true;
     underTextureID = overTextureID = 0;
 
-    imageLocations[PHOTOS_OF_US] = "photos";
-    imageLocations[INSTAGRAM_PHOTOS] = "photos";
-    imageLocations[KID_PHOTOS] = "photos";
+    imageLocations[PHOTOS_OF_US] = "photos/us";
+    imageLocations[SNAPCHAT_PHOTOS] = "photos/snapchat";
+    imageLocations[KID_PHOTOS] = "photos/kids";
     mode = PHOTOS_OF_US;
     loadImages();
 
@@ -136,8 +136,8 @@ void ofApp::incrementDisplayMode(){
     if(mode == PHOTOS_OF_US){
         mode = KID_PHOTOS;
     }else if(mode == KID_PHOTOS){
-        mode = INSTAGRAM_PHOTOS;
-    }else if(mode == INSTAGRAM_PHOTOS){
+        mode = SNAPCHAT_PHOTOS;
+    }else if(mode == SNAPCHAT_PHOTOS){
         mode = PHOTOS_OF_US;
     }
 }
