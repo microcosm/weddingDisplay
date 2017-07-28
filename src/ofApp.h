@@ -31,7 +31,7 @@ public:
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
     ofxLayerMask masker;
-    bool isLayered, firstIncrement, justReset, isTransitioning;
+    bool isLayered, firstIncrement, justReset, isTransitioning, drawOverlay;
     int numImages, numSnapchatImages;
     int framesBeforeSwitchToNextPhoto, framesForFades, framesAfterModeTransitionBeforeLoad, framesAfterModeTransitionBeforeStart;
     int framesSinceTransition;
