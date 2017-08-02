@@ -28,6 +28,7 @@ public:
     void loadSnapchatImages(ofDirectory &dir);
     void loadOtherImages(ofDirectory &dir);
     void loadImage(string path);
+    string getActualName(string s);
 
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;

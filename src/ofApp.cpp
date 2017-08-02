@@ -163,7 +163,8 @@ void ofApp::drawDirectoryName(){
     if(mode == SNAPCHAT_PHOTOS){
         font.drawStringCentered("Wedding Photo Booth!", ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }else{
-        font.drawStringCentered(otherImageDirectories.at(currentDirectoryID), ofGetWidth() * 0.5, ofGetHeight() * 0.5);
+        string dirName = getActualName(otherImageDirectories.at(currentDirectoryID));
+        font.drawStringCentered(dirName, ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }
 }
 
@@ -254,4 +255,15 @@ void ofApp::loadImage(string path){
     }else{
         textures.back().setup(path, ofGetWidth(), ofGetHeight(), 1, TEXTURE_OFFSET_MIDDLE_CENTER, TEXTURE_MODE_FIT, TEXTURE_WRAP_CLAMP_TO_BORDER);
     }
+}
+
+string ofApp::getActualName(string s) {
+    char delim = ')';
+    vector<string> elems;
+    stringstream ss(s);
+    string item;
+    while(getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems.at(1);
 }
