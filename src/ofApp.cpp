@@ -194,11 +194,15 @@ void ofApp::incrementDirectoryID(){
 }
 
 void ofApp::incrementDisplayMode(){
-    if(mode == SNAPCHAT_PHOTOS){
+    if(mode == OTHER_PHOTOS){
+        if(currentDirectoryID == 1 || currentDirectoryID == 3 || currentDirectoryID == 6){
+            mode = SNAPCHAT_PHOTOS;
+        }else{
+            incrementDirectoryID();
+        }
+    }else if(mode == SNAPCHAT_PHOTOS){
         mode = OTHER_PHOTOS;
         incrementDirectoryID();
-    }else if(mode == OTHER_PHOTOS){
-        mode = SNAPCHAT_PHOTOS;
     }
 }
 
