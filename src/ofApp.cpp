@@ -6,10 +6,11 @@ void ofApp::setup(){
     framesBeforeSwitchToNextPhoto = 120;
     framesForFades = 60;
     framesAfterModeTransitionBeforeLoad = 60;
-    framesAfterModeTransitionBeforeStart = 300;
+    framesAfterModeTransitionBeforeStart = 200;
     numSnapchatImages = 3;
     showOverlay = false;
-    rootDirectory = "/Users/amcw/Drive/Wedding Slideshow";
+    rootDirectory = "/Users/amcw/Desktop/Wedding Slideshow";
+    snapChatImageDirectory = "/Users/amcw/Pictures/Photos Library.photoslibrary/Masters/2017/08";
 
     ofToggleFullscreen();
     ofSetFrameRate(30);
@@ -29,13 +30,12 @@ void ofApp::setup(){
 
 void ofApp::setupImages(){
     photosDirectory = "photos";
-    snapChatImageDirectory = "snapchat";
     ofDirectory dir(rootDirectory + "/" + photosDirectory);
     dir.listDir();
     vector<ofFile> contents = dir.getFiles();
 
     for(int i = 0; i < contents.size(); i++){
-        if(contents.at(i).isDirectory() && contents.at(i).getFileName() != snapChatImageDirectory){
+        if(contents.at(i).isDirectory()){
             otherImageDirectories.push_back(contents.at(i).getFileName());
         }
     }
@@ -207,16 +207,20 @@ void ofApp::incrementDisplayMode(){
 }
 
 void ofApp::loadImages(){
-    string currentImagesDirectory = mode == SNAPCHAT_PHOTOS ? snapChatImageDirectory : otherImageDirectories.at(currentDirectoryID);
-    ofDirectory dir(rootDirectory + "/" + photosDirectory + "/" + currentImagesDirectory);
-    dir.allowExt("png");
-    dir.allowExt("jpg");
-    dir.listDir();
     textures.clear();
 
     if(mode == SNAPCHAT_PHOTOS){
+        ofDirectory dir(snapChatImageDirectory);
+        files.clear();
+        scan_dir(dir);
         loadSnapchatImages(dir);
     }else{
+        ofDirectory dir(rootDirectory + "/" + photosDirectory + "/" + otherImageDirectories.at(currentDirectoryID));
+        dir.allowExt("png");
+        dir.allowExt("jpg");
+        dir.allowExt("PNG");
+        dir.allowExt("JPG");
+        dir.listDir();
         loadOtherImages(dir);
     }
 }
@@ -226,9 +230,9 @@ void ofApp::loadSnapchatImages(ofDirectory &dir){
     numImages = numSnapchatImages;
 
     //cout << "Loaded from snapchat folder:" << endl;
-    for(int i = 0; i < dir.size(); i++){
-        snapchatImagesPaths.push_back(dir.getPath(i));
-        //cout << dir.getPath(i) << endl;
+    for(int i = 0; i < files.size(); i++){
+        snapchatImagesPaths.push_back(files.at(i).getAbsolutePath());
+        //cout << files.at(i).getAbsolutePath() << endl;
     }
     //cout << "-----" << endl;
     random_shuffle(snapchatImagesPaths.begin(), snapchatImagesPaths.end());
@@ -270,4 +274,26 @@ string ofApp::getActualName(string s) {
         elems.push_back(item);
     }
     return elems.at(1);
+}
+
+//https://gist.github.com/aman-tiwari/daa815b4c6e938875017
+const string allowed_ext[] = {"jpg", "png", "JPG", "PNG"};
+
+void ofApp::scan_dir(ofDirectory dir){
+    ofDirectory new_dir;
+    int size = dir.listDir();
+    for (int i = 0; i < size; i++){
+        if (dir.getFile(i).isDirectory()){
+            cout << "Found directory: " << dir.getFile(i).getAbsolutePath() << endl;
+            new_dir = ofDirectory(dir.getFile(i).getAbsolutePath());
+            new_dir.listDir();
+            new_dir.sort();
+            scan_dir(new_dir);
+        } else if (std::find(std::begin(allowed_ext),
+                             std::end(allowed_ext),
+                             dir.getFile(i).getExtension()) != std::end(allowed_ext)) {
+            cout << "Found file: " << dir.getFile(i).getAbsolutePath() << endl;
+            files.push_back(dir.getFile(i));
+        }
+    }
 }

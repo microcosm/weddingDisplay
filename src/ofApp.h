@@ -29,6 +29,7 @@ public:
     void loadOtherImages(ofDirectory &dir);
     void loadImage(string path);
     string getActualName(string s);
+    void scan_dir(ofDirectory dir);
 
     vector<ofxTexturePlane> textures;
     ofxTexturePlane texture;
@@ -48,4 +49,5 @@ public:
     ofxCenteredTrueTypeFont font;
     ofImage image;
     bool showOverlay;
+    vector<ofFile> files;
 };
