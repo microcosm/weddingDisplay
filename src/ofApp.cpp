@@ -7,7 +7,7 @@ void ofApp::setup(){
     framesForFades = 60;
     framesAfterModeTransitionBeforeLoad = 60;
     framesAfterModeTransitionBeforeStart = 200;
-    numSnapchatImages = 3;
+    numSnapchatImages = 8;
     showOverlay = false;
     rootDirectory = "/Users/amcw/Desktop/Wedding Slideshow";
     snapChatImageDirectory = "/Users/amcw/Pictures/Photos Library.photoslibrary/Masters/2017/08";
@@ -161,7 +161,7 @@ void ofApp::draw(){
 void ofApp::drawDirectoryName(){
     ofSetColor(ofColor(ofColor::white, directoryNameOpacity.val()));
     if(mode == SNAPCHAT_PHOTOS){
-        font.drawStringCentered("Wedding Photo Booth!", ofGetWidth() * 0.5, ofGetHeight() * 0.5);
+        font.drawStringCentered("Selfie Booth", ofGetWidth() * 0.5, ofGetHeight() * 0.5);
     }else{
         string dirName = getActualName(otherImageDirectories.at(currentDirectoryID));
         font.drawStringCentered(dirName, ofGetWidth() * 0.5, ofGetHeight() * 0.5);
